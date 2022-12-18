@@ -24,6 +24,12 @@ typedef struct iter_st {
 	int value;
 } iter_t;
 
+long long currentTime() {
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	return time.tv_usec / 1000;
+}
+
 double power(double value, int in) {
 	int i;
 	double result = 1;
@@ -43,8 +49,10 @@ int powerEco(int in) {
 
 void* taylorStep(void *args) {
 	iter_t *arg = (iter_t*) args;
-	double perem = powerEco(arg->taylorI) * power(2 * PI * arg->loopI / arg->constN, 2 * arg->taylorI + 1);
-	fprintf(stdout, "thread: %d; arr[%d]=%.25f\n", (int) pthread_self(), arg->loopI, perem);
+	double perem = powerEco(arg->taylorI)
+			* power(2 * PI * arg->loopI / arg->constN, 2 * arg->taylorI + 1);
+	fprintf(stdout, "thread: %d; arr[%d]=%.25f, %d\n", (int) pthread_self(),
+			arg->loopI, perem, currentTime());
 	fprintf(input, "%d %d %.8lf\n", (int) pthread_self(), arg->loopI, perem);
 	quantity[arg->value] = 0;
 	free(arg);

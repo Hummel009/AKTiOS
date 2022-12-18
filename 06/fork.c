@@ -20,6 +20,12 @@ typedef struct iter_st {
 	int value;
 } iter_t;
 
+long long currentTime() {
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	return time.tv_usec / 1000;
+}
+
 double power(double value, int in) {
 	int i;
 	double result = 1;
@@ -38,8 +44,10 @@ int powerEco(int in) {
 }
 
 void taylorStep(iter_t *arg) {
-	double perem = powerEco(arg->taylorI) * power(2 * PI * arg->loopI / arg->constN, 2 * arg->taylorI + 1);
-	fprintf(stdout, "fork: %d; arr[%d]=%.25f\n", (int) getpid(), arg->loopI, perem);
+	double perem = powerEco(arg->taylorI)
+			* power(2 * PI * arg->loopI / arg->constN, 2 * arg->taylorI + 1);
+	fprintf(stdout, "fork: %d; arr[%d]=%.25f; %d\n", (int) getpid(), arg->loopI,
+			perem, currentTime());
 	fprintf(input, "%d %d %.8lf\n", (int) getpid(), arg->loopI, perem);
 	free(arg);
 }
