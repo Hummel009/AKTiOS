@@ -94,7 +94,7 @@ int taylorFunc(int steps, int values) {
 int main(int argc, char *argv[]) {
 	int values, steps;
 	if (argc < 3) {
-		fprintf(stderr, "Error:Too few arguments!\n");
+		fprintf(stderr, "Error: Too few arguments!\n");
 		return 1;
 	}
 	steps = atoi(argv[1]);
